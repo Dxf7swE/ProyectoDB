@@ -1,0 +1,64 @@
+CREATE DATABASE PAPELERIA
+
+-- Tabla Alumno
+CREATE TABLE Alumno (
+    NumCtrl INT PRIMARY KEY,
+    Nombre VARCHAR(100)
+);
+
+-- Tabla Puntos
+CREATE TABLE Puntos (
+    NumCtrl INT,
+    Puntos DECIMAL(10, 2),
+    Ptos_Generados DECIMAL(10, 2),
+    FOREIGN KEY (NumCtrl) REFERENCES Alumno(NumCtrl)
+);
+
+-- Tabla Producto
+CREATE TABLE Producto (
+    Id_Producto INT PRIMARY KEY,
+    Nombre VARCHAR(100),
+    Precio DECIMAL(10, 2),
+    Stock INT,
+    Descripcion VARCHAR(255)
+);
+
+-- Tabla Venta
+CREATE TABLE Venta (
+    ID_VENTA INT PRIMARY KEY,
+    NumCtrl INT,
+    Fecha_Venta DATE,
+    Total_Venta DECIMAL(10, 2),
+    FOREIGN KEY (NumCtrl) REFERENCES Alumno(NumCtrl)
+);
+
+-- Tabla DetalleVenta
+CREATE TABLE DetalleVenta (
+    ID_DETALLE INT PRIMARY KEY,
+    ID_VENTA INT,
+    Id_Producto INT,
+    Subtotal DECIMAL(10, 2),
+    Ptos_Generados DECIMAL(10, 2),
+    FOREIGN KEY (ID_VENTA) REFERENCES Venta(ID_VENTA),
+    FOREIGN KEY (Id_Producto) REFERENCES Producto(Id_Producto)
+);
+
+-- Tabla Banco
+CREATE TABLE Banco (
+    ID_CUENTA INT PRIMARY KEY,
+    CUENTA VARCHAR(50),
+    Saldo DECIMAL(10, 2)
+);
+
+-- Tabla Pago
+CREATE TABLE Pago (
+    ID_PAGO INT PRIMARY KEY,
+    ID_VENTA INT,
+    TIPO_PAGO VARCHAR(50),
+    MONTO_TOTAL DECIMAL(10, 2),
+    ID_CUENTA_ORIGEN INT,
+    ID_CUENTA_DESTINO INT,
+    FOREIGN KEY (ID_VENTA) REFERENCES Venta(ID_VENTA),
+    FOREIGN KEY (ID_CUENTA_ORIGEN) REFERENCES Banco(ID_CUENTA),
+    FOREIGN KEY (ID_CUENTA_DESTINO) REFERENCES Banco(ID_CUENTA)
+);
